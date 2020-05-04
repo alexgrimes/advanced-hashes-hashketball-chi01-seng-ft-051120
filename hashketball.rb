@@ -1,4 +1,5 @@
 # Write your code below game_hash
+require 'pry'
 def game_hash
   {
     home: {
@@ -126,4 +127,87 @@ def game_hash
   }
 end
 
-# Write code here
+def find_players
+  game_hash.values.map do |team|
+    team[:players]
+  end.flatten 
+end 
+
+# * Build a method, `num_points_scored` that takes in an argument of a player's
+#   name and returns the number of points scored for that player.
+
+def num_points_scored(player_name)
+  players = find_players
+  player = players.find do |p|
+    p[:player_name] == player_name
+  end 
+  player[:points]
+end 
+
+# * Build a method, `shoe_size`, that takes in an argument of a player's name and
+#   returns the shoe size for that player.
+
+def shoe_size(player_name)
+  players = find_players
+  player = players.find do |p|
+    p[:player_name] == player_name
+  end
+  player[:shoe]
+end 
+
+def team_colors(team_name)
+  team = game_hash.values.find do |team|
+    team[:team_name] == team_name
+  end
+  team[:colors]
+end 
+
+def team_names
+  [game_hash[:home][:team_name],game_hash[:away][:team_name]]
+end 
+
+def team (team_name)
+  case team_name
+  when game_hash[:home][:team_name]
+    game_hash[:home]
+    when game_hash[:away][:team_name]
+      game_hash[:away]
+  end
+end 
+
+def player_numbers (team_name)
+  team(team_name)[:players].map do |player|
+    player[:number]
+  end 
+end 
+
+
+# * Build a method, `player_stats`, that takes in an argument of a player's name
+#   and returns a hash of that player's stats.
+
+def player_stats (player_name)
+  players = find_players
+  player = players.find do |p|
+    p[:player_name] == player_name
+  end 
+  player
+end 
+
+# * Build a method, `big_shoe_rebounds`, that will return the number of rebounds
+#   associated with the player that has the largest shoe size. Break this one down
+#   into steps:
+
+#   * First, find the player with the largest shoe size
+#   * Then, return that player's number of rebounds
+#   * Remember to think about return values here.
+
+def big_shoe_rebounds
+  players = find_players
+  return_hash = {shoe: 0}
+  players.each do |player_stat_hash| 
+    if player_stat_hash[:shoe] > return_hash[:shoe] 
+      return_hash = player_stat_hash
+    end 
+  end 
+  return_hash[:rebounds]
+end
